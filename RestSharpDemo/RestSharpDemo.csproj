@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="Base\Settings.cs" />
     <Compile Include="Hooks\TestInitialize.cs" />
+    <Compile Include="Model\LoginUser.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Steps\AddUserSteps.cs" />
     <Compile Include="Steps\GetUserSteps.cs" />
@@ -138,6 +139,9 @@
     <None Include="Features\GetUser.feature" />
     <None Include="packages.config" />
     <EmbeddedResource Include="TestData\Data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\User.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
