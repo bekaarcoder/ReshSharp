@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using RestSharp;
+using RestSharp.Authenticators;
 using RestSharp.Serialization.Json;
 using RestSharpDemo.Model;
 using RestSharpDemo.Utilities;
@@ -100,6 +101,38 @@ namespace RestSharpDemo
             var response = client.ExecutePostTaskAsync<User>(request).GetAwaiter().GetResult();
 
             Assert.That(response.Data.name, Is.EqualTo("Penguin"), "Name is not matched.");
+        }
+
+        [Test]
+        public void AuthenticatingUser()
+        {
+            var client = new RestClient("https://fast-fjord-65171.herokuapp.com/");
+
+            var request = new RestRequest("api/users/login", Method.POST);
+
+            var file = @"TestData\User.json";
+            var jsonData = JsonConvert.DeserializeObject<LoginUser>(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, file)).ToString());
+            request.AddJsonBody(jsonData);
+
+            var response = client.ExecutePostTaskAsync(request).GetAwaiter().GetResult();
+            var access_token = response.DeserializeResponse()["token"];
+
+            var token = access_token.Split(' ')[1];
+
+            var jwtAuth = new JwtAuthenticator(token);
+            client.Authenticator = jwtAuth;
+
+            var postRequest = new RestRequest("api/posts", Method.POST);
+            postRequest.AddJsonBody(new { text = "Posting this with RestSharp" });
+
+            var postResponse = client.ExecutePostTaskAsync(postRequest).GetAwaiter().GetResult();
+            //var result = postResponse.DeserializeResponse()["text"];
+            //Console.WriteLine(result);
+            var result = postResponse.DeserializeResponse();
+            foreach(KeyValuePair<string, string> data in result)
+            {
+                Console.WriteLine($"{data.Key} - {data.Value}");
+            }
         }
     }
 }

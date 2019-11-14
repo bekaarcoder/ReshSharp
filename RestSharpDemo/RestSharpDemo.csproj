@@ -125,8 +125,10 @@
   <ItemGroup>
     <Compile Include="Base\Settings.cs" />
     <Compile Include="Hooks\TestInitialize.cs" />
+    <Compile Include="Model\LoginUser.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Steps\AddUserSteps.cs" />
+    <Compile Include="Steps\CreatePost.cs" />
     <Compile Include="Steps\GetUserSteps.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,9 +137,13 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Features\AddUser.feature" />
+    <None Include="Features\CreatePost.feature" />
     <None Include="Features\GetUser.feature" />
     <None Include="packages.config" />
     <EmbeddedResource Include="TestData\Data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\User.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
